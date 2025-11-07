@@ -27,4 +27,19 @@ TEST_CASE("BinarySearchTree basic operations") {
   CHECK(C.toInorderStr() == "2,3,4,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30");
   CHECK(C.BFT() ==
         "[[16],[8,24],[4,12,20,28],[2,6,10,14,18,22,26,30],[3,7,15]]");
+
+    BinarySearchTree<int> D;
+
+    D.insert(0);
+    D.insert(1);
+    D.insert(2);
+    D.insert(3);
+    CHECK(D.toInorderStr() == "0,1,2,3");
+    CHECK(D.BFT() == "[[0],[1],[2],[3]]");
+
+    BinarySearchTree<int> E;
+    for(int i : {8,4,6,2,1,10,25,15,20,12,23}) E.insert(i);
+    CHECK(E.toInorderStr() == "1,2,4,6,8,10,12,15,20,23,25");
+    CHECK(E.BFT() == "[[8],[4,10],[2,6,25],[1,15],[12,20],[23]]");
+
 }

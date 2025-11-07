@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <queue>
 using namespace std;
 
 template <typename T> string toStr(const T &value) {
@@ -112,7 +113,52 @@ public:
   void remove(const Comparable &x) { remove(x, root); }
 
   string BFT() const {
-    string st;
+    string st = "[[";
+    queue<BinaryNode*> q;
+    int prev = 1;
+    int level = 1, max = 1, countNodes = 1, countEmpty = 0; //A few counters for output 
+    q.push(root);
+
+    while(!q.empty()){
+
+      BinaryNode* u = q.front(); //Gets nodes in binary tree through BFT 
+      q.pop();
+
+      if(countNodes+countEmpty >= max){ //To determine what level 
+      // (countEmpty will count how many empty nodes there are per level and countNodes will reset to count how many nodes are in the new level)
+        max*=2;
+        countEmpty*=2;
+        ++level;
+        countNodes = 0;
+      }
+
+      if(u->left != nullptr) {
+        q.push(u->left);
+        ++countNodes;
+      }
+      else ++countEmpty;
+
+      if(u->right != nullptr) {
+        q.push(u->right);
+        ++countNodes;
+      }
+      else ++countEmpty;
+
+      if(st == "[["){}
+
+      else if(prev < level){
+          st += "],[" ;
+        }
+      else{
+        st += "," ;
+      }
+
+      st += toStr(u->element);
+      
+      prev = level;      
+      //if(u.first->left != nullptr && u.first->right != nullptr) ++level;
+    }
+    st += "]]";
     return st;
   }
 
@@ -277,6 +323,13 @@ private:
     else
       return new BinaryNode{t->element, clone(t->left), clone(t->right)};
   }
+
+  /*void GetRightNodes(BinaryNode* t, vector<BinaryNode*> &v) const{
+    if(t != nullptr){
+      v.push_back(t);
+      GetRightNodes(t->right, v);
+    }
+  }*/ //Tried implementing algorithm where level would go up based on the rightmost node but only counted the last line
 };
 
 #endif
